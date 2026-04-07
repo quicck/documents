@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新入生一覧</title>
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-main: #1d1d1f;
+            --text-sub: #48484a;
+            --accent-blue: #007aff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        .class-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .class-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+
+        .class-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+        }
+
+        .class-info {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            line-height: 1.4;
+        }
+
+        .class-info span {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .student-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 6px;
+        }
+
+        .student-item {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            font-size: 0.95rem;
+        }
+
+        .student-no {
+            font-weight: 600;
+            width: 30px;
+            color: var(--text-sub);
+            font-size: 0.8rem;
+        }
+
+        .student-name {
+            flex-grow: 1;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>新入生一覧</h1>
+        <p>令和八年度 入学クラス名簿</p>
+    </div>
+
+    <div id="root" class="container"></div>
+
+    <script>
+        const classData = [
+            {
+                class: "1A", course: "進学コース", elective: "音楽", homeroom: "鈴木 和",
+                students: ["青木 龍太郎", "伊藤 愛菜", "内海 はるか", "江口 みのり", "大西 琉葦", "小野寺 琉蔵", "神谷 珠子", "菅野 遥叶", "菊池 桃奈", "木澤 美結", "木村 歩夢", "倉重 結帆", "小池 曜", "五本木 美潤", "酒井 優成", "桜井 大和", "佐藤 央季", "清水 崇太郎", "鈴木 恵美理", "武山 奏助", "田中 佑太", "千葉 陽生", "西村 春音", "西山 輝", "野口 漣矢", "長谷川 実南", "藤澤 夏月", "藤野 真優", "藤山 紗羽", "町田 遥菜", "松田 愛菜", "右田 達", "八木 唯花", "山口 玲奈", "山中 琉成", "横田 夕茉", "若松 優佳"]
+            },
+            {
+                class: "1B", course: "進学コース", elective: "音楽", homeroom: "中田 雅弘",
+                students: ["阿久津 紗希", "衛藤 みなみ", "大川 暁", "大熊 祐吾", "太田 りり", "小川 航平", "小野 莉佳", "川島 有葵", "川畑 ゆり", "川原 大雅", "川村 善", "鬼島 侃也", "木村 友哉", "清水 葵", "庄司 あさひ", "新海 瑞記", "杉田 にこ", "髙垣 ひかり", "髙梨 晄汰", "武井 海暁", "戸張 帆香", "中 杏紗", "中村 陽", "丹羽 史瑞希", "福山 咲季", "布施 友良", "堀内 愛", "前田 逢心", "松永 悠希", "水谷 昴", "三野輪 大智", "本口 太一", "矢川 莉乃", "山﨑 蓮翔", "山田 悠太", "吉田 百花", "渡邉 澪"]
+            },
+            {
+                class: "1C", course: "進学コース", elective: "音楽", homeroom: "門間 陸弥",
+                students: ["浅香 希碧", "安宅 結菜", "井澤 俐咲", "伊藤 大智", "大橋 明紗", "荻田 鳳臥", "小原 陽依", "木﨑 佑人", "小林 千晴", "佐久間 美海", "髙山 凜", "佐藤 優衣", "鎖目 瑞生", "柴田 大幹", "嶋﨑 舞", "杉山 洋将", "高松 凜", "高山 直大", "田中 陽翔", "田山 郁乃", "寺島 瑠奈", "寺林 聖佳", "戸井田 樹奈", "戸澤 万穂", "ドロガン 礼大", "中野 海闘", "中村 優太", "樋口 珠奈", "廣田 琴心", "松﨑 浩志", "三村 奈瑠美", "持田 創太", "森 統真", "森川 映", "安田 諒司", "由井 映里奈", "渡邊 翔和", "渡辺 瑠奈", "Massimo Conte"]
+            },
+            {
+                class: "1D", course: "進学コース", elective: "美術", homeroom: "芦澤 貴央",
+                students: ["安達 里彩", "荒木 希海", "有吉 果穂", "石原 周", "井上 聡太", "海老名 優翔", "小野田 美優", "貝原 悠太", "金本 希都", "古賀 叶恩", "後藤 拓哉", "税田 眞依", "相楽 実空里", "澤 瑛斗", "塩谷 拓真", "煤賀 希石", "高田 恭輔", "高橋 実子", "武井 咲羽", "中川 航希", "中原 千晴", "野沢 智依", "野村 美月", "長谷川 敦之", "林 航大", "細谷 桜子", "本田 奈々", "町田 葵唯", "松本 紗弥", "宮川 伊遼", "向谷地 美桜", "矢崎 紗有", "山中 俊之介", "山本 合論", "山本 聖也", "依光 葵"]
+            },
+            {
+                class: "1E", course: "進学コース", elective: "音楽", homeroom: "神田 智衣",
+                students: ["青柳 つぐみ", "浅野 凜", "安立 優花", "有村 菜那", "飯島 紘子", "石津 凛", "伊東 慶祐", "猪股 星花", "大島 芽唯", "小野 絢花", "勝山 良知", "河手 友希", "吉間 裕人", "児玉 美森", "坂本 悠真", "鈴木 きずな", "須藤 大駕", "田岡 里彩", "田口 稜晃", "辻 望生", "鶴﨑 萌々乃", "野崎 寛人", "長谷川 颯", "端山 このみ", "東出 菜々子", "平本 朝陽", "堀江 杏奈", "馬越 康太朗", "増田 志音", "三浦 晴人", "水越 青葉", "皆川 陽太", "峯岸 悠我", "矢口 心音", "山岡 千鶴", "吉沢 太希", "涌井 晶子"]
+            },
+            {
+                class: "1F", course: "進学コース", elective: "美術", homeroom: "松下 真由美",
+                students: ["相澤 瑠美夏", "五十嵐 天空", "磯野 采把", "磯野 祥大", "今村 梨乃花", "内田 涼太", "榎本 虹々渚", "小笠原 瑠一", "加藤 遼一", "金子 菜々", "金子 文香", "金本 琉愛", "坂井 花帆", "佐々木 光希", "鈴木 祥子", "鈴木 里空", "武井 和奏", "内藤 陽希", "永井 晴史", "中神 仁琴", "中村 凌太朗", "西谷 和夏", "西山 幹渚", "根立 碧人", "橋本 悠生", "籏野 雄紀", "原田 柊", "町田 歩希", "松下 葉月", "村上 遼", "八百 朗斗", "安武 ふわり", "山口 桃百花", "山﨑 樹来", "山本 淳史", "𠮷澤 颯葉", "渡邉 結"]
+            },
+            {
+                class: "1G", course: "進学コース", elective: "書道", homeroom: "嬉野 康輔",
+                students: ["安達 理紗", "石田 悠人", "石平 湊", "井口 柚月", "海老沼 千彩", "大久保 瑛人", "小川 美桜", "小田 彩弥莉", "川又 龍", "木津 壮裕", "熊倉 琉太", "黒岩 愛莉", "肥沼 叶羽", "小山 純之介", "志田 桃佳", "渋谷 秋仁", "白井 翼", "鈴木 咲希", "関口 陽葵", "鶴岡 大晴", "堂野崎 澪", "外池 莉子", "永田 楓花", "名雪 裕太", "野平 幸佑", "橋口 果歩", "畠野 苗七", "比留間 由紗", "藤田 柔心", "藤本 彩芭", "松田 天寧", "宮本 樹", "山下 夢明", "山本 奏", "山本 千夏", "亘 真臣"]
+            },
+            {
+                class: "1H", course: "進学コース", elective: "書道", homeroom: "山崎 隆宏",
+                students: ["青山 知燕", "浅見 大和", "阿部 栞奈", "石井 りょう", "石上 寛尚", "石森 柚紀", "稲田 航大", "岩崎 成", "大嶽 実央", "甲斐 涼太郎", "川上 悟史", "河村 祐之介", "神田 くらら", "熊谷 弥桜", "越野 美咲", "小山 葵生", "佐藤 瑠花", "須賀 愛美", "鈴木 朱莉", "関根 悠真", "染谷 木菜", "髙橋 芹珀", "田中 英鈴", "趙 博洋", "冨野 聖奈", "中嶋 小遥", "野神 晴哉", "濱野 亮翔", "原東 亜海", "槇 ひなた", "松下 ハディ", "柳沼 陽太", "山口 修平", "山本 美月", "横山 彩絵子", "𠮷田 水奏"]
+            },
+            {
+                class: "1I", course: "特進コース", elective: "美術", homeroom: "後藤 知子",
+                students: ["石川 慈基", "浦上 獅子丸", "尾池 優太", "大久保 樹", "大塚 美咲", "小川 真緒", "小野塚 舞", "梶谷 哉太", "木寺 蓮", "粂川 希実", "小針 悠生", "榊原 結里子", "佐藤 空", "鮫島 律稀", "清水 ほのか", "鈴木 啓太", "鈴木 優生", "関根 来夏", "世古 理人", "高塚 泉", "土谷 紗良", "土屋 由太朗", "寺谷 紗羽", "徳増 花南", "豊久 理央", "長谷川 千紗", "花生 啓", "東原 璃紗子", "廣保 薫", "本多 花帆", "前島 龍生", "前田 さくら", "松尾 春希", "三谷 知輝", "峯島 湧", "武藤 直太朗", "山縣 遥花", "吉田 凪甫"]
+            },
+            {
+                class: "1J", course: "特進コース", elective: "美術", homeroom: "設楽 大",
+                students: ["青木 晃之助", "青竹 美紗希", "安部 美羽", "石黒 佳帆", "一法師 兼定", "入江 春輝", "浦上 虎二朗", "大木 秋", "大嶋 樹", "大館 結花", "岡崎 耀太郎", "岡島 遼宜", "小栁 一椛", "加藤 惇陽", "河内 成駿", "郡司 塔子", "齋藤 真唯花", "齋藤 陸水", "坂本 晃紀", "佐藤 日菜", "鈴木 誠士郎", "髙橋 千帆", "竹内 海登", "立石 結愛", "中西 岳大", "中村 ほなみ", "伴 航平", "樋口 百花", "藤井 郁", "藤林 悠", "星野 創太", "松田 理沙", "元島 廣亮", "諸橋 瑞月", "山﨑 陸斗", "山中 美幸", "吉田 明加"]
+            },
+            {
+                class: "1K", course: "特進コース", elective: "音楽", homeroom: "朝倉 佑季",
+                students: ["天野 太陽", "猪狩 あお", "池田 航太朗", "石井 斗吾", "井上 琥太郎", "今井 律花", "岩崎 加奈", "小野 紋奈", "門屋 真生", "金児 衣純", "桑原 龍之介", "近藤 理奈", "篠原 壮一郎", "菅 紬", "須崎 勇宇真", "須田 惺", "高橋 悠", "武井 紬", "竹洞 環", "田島 慈恩", "田中 凛", "長濱 友飛", "梨和 祢雄", "西川 結心", "西村 春臣", "長谷 紗奈", "堀 真那", "政野 純平", "真野 太一", "三浦 景都", "三井 景勝", "宮ケ原 理子", "村部 珠冬", "百瀬 朱里", "山本 理仁", "湯脇 春", "渡邊 亜梨"]
+            },
+            {
+                class: "1L", course: "特進コース", elective: "書道", homeroom: "菅野 優香",
+                students: ["青木 実優", "荒井 茉里絵", "幾久 ひかり", "牛窪 咲菜", "梅本 紬希", "遠藤 有紗", "大越 茉和", "大塚 脩矢", "岡島 健太", "掛谷 湊", "川原 樹", "木村 佑清", "久保 祥真", "熊谷 周士", "倉橋 義哉", "小中 湊太", "小林 明里", "坂間 彩香", "澤田 千畝", "白石 和摩", "菅野 智公", "杉生 朝陽", "鈴木 香帆", "鈴木 沙羅", "世良 透悟", "髙橋 咲", "高見 龍太", "田口 絢葉", "田中 煌祐", "田中 紗英", "玉井 祐衣", "土屋 実佑", "戸塚 渚那", "仁木 晃太郎", "東山 陸人", "丸山 千里", "𠮷田 優純"]
+            },
+            {
+                class: "1M", course: "特進コース", elective: "音楽", homeroom: "福江 幸喜",
+                students: ["愛甲 瑛大", "浅部 庵", "有泉 楓", "五十嵐 彩乃", "石井 寛", "石間 加純", "磯野 眞", "一條 晴信", "一色 結翔", "内村 寧玖", "遠藤 眞子", "大沼 莉子", "大野 菜音花", "加瀬 絢菜", "上仮屋 周佑", "紙谷 丞太郎", "北川 花菜", "久礼 月絆", "近藤 直輝", "齊藤 圭佑", "坂本 流一", "佐々木 夏凜", "澤 祐樹", "塩野入 珂音", "瀬野 愛梨", "高橋 侑大", "辻 咲千香", "中台 陽太", "西館 夏帆", "長谷川 千華", "土生 一乃", "浜本 寛大", "一柳 朋毅", "廣瀬 巧真", "藤森 巽", "舩山 大雅", "吉田 隼都", "Ewan Stockwell"]
+            }
+        ];
+
+        const root = document.getElementById('root');
+
+        classData.forEach(data => {
+            const card = document.createElement('div');
+            card.className = 'class-card';
+
+            let studentListHTML = '';
+            data.students.forEach((name, index) => {
+                studentListHTML += `
+                    <li class="student-item">
+                        <span class="student-no">${index + 1}</span>
+                        <span class="student-name">${name}</span>
+                    </li>
+                `;
+            });
+
+            card.innerHTML = `
+                <div class="class-header">
+                    <div class="class-name">${data.class}</div>
+                    <div class="class-info">
+                        コース: <span>${data.course}</span><br>
+                        選択: <span>${data.elective}</span><br>
+                        担任: <span>${data.homeroom}</span>
+                    </div>
+                </div>
+                <ul class="student-list">
+                    ${studentListHTML}
+                </ul>
+            `;
+            root.appendChild(card);
+        });
+    </script>
+</body>
+</html>
+
+```
